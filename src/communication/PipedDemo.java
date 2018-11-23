@@ -6,9 +6,9 @@ import java.io.PipedReader;
 import java.io.PipedWriter;
 
 /**
- * @author:Wilder Gao
- * @time:2018/1/25
- * @Discription：Piped类型的流，必须要先进行绑定，也就是调用connect()方法，
+ * @author Wilder Gao
+ * time:2018/1/25
+ * Description：Piped类型的流，必须要先进行绑定，也就是调用connect()方法，
  * 如果没有将输入流和输出流绑定起来将会出现异常
  */
 public class PipedDemo {

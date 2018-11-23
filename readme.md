@@ -20,4 +20,8 @@ Condition按字面意思理解就是条件，当然，我们也可以将其认�
 
 --代码详见 /communication/wait_notify
 
+### ReentrantLock 和 ReentrantReadWriteLock   
+- ReentrantLock 调用lock方法时会进行同步，也就是说无论是读还是写，每一次只有一个线程可以获得锁
+  
+- ReentrantReadWriteLock 分为读锁和写锁，多个线程可以同时获取读锁读取共享变量，而读与写、写与写则是互斥的，同一个时间内只能有一个线程可以获取到锁
  
