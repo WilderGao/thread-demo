@@ -1,4 +1,4 @@
-package thread_pool;
+package thread_pool.demo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,13 +15,21 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
     private static final int MAX_WORKER_NUMBERS = 10;
     private static final int DEFAULT_WORKER_NUMBERS = 5;
     private static final int MIN_WORKER_NUMBERS = 1;
-    //工作列表，会向里面插入工作
+    /**
+     *  工作列表，会向里面插入工作
+     */
     private final LinkedList<Job> jobs = new LinkedList<Job>();
-    //工作者列表
-    private final List<Worker> workers = Collections.synchronizedList(new ArrayList<Worker>());
-    //工作者线程的数量
+    /**
+     * 工作者列表
+     */
+    private final List<Worker> workers = Collections.synchronizedList(new ArrayList<>());
+    /**
+     * 工作者线程的数量
+     */
     private int workerNum = DEFAULT_WORKER_NUMBERS;
-    //线程编号生成
+    /**
+     * 线程编号生成
+     */
     private AtomicInteger threadNum = new AtomicInteger();
 
     public DefaultThreadPool(){
@@ -34,6 +42,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
     }
 
 
+    @Override
     public void execute(Job job) {
         if (job != null){
             synchronized (jobs){
@@ -44,12 +53,14 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
     }
 
 
+    @Override
     public void shutdown() {
         for (Worker worker : workers) {
             worker.shutdown();
         }
     }
 
+    @Override
     public void addWorkers(int num) {
         synchronized (jobs){
             //不能超过最大值
@@ -61,6 +72,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
+    @Override
     public void removeWorkers(int num) {
         synchronized (jobs){
             if (num > this.workerNum){
@@ -79,6 +91,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
+    @Override
     public int getJobSize() {
         return jobs.size();
     }
@@ -95,6 +108,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
 
     class Worker implements Runnable{
         private volatile boolean running = true;
+        @Override
         public void run() {
             while (running){
                 Job job = null;

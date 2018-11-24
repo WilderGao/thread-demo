@@ -1,4 +1,4 @@
-package thread_pool;
+package thread_pool.demo;
 
 /**
  * @author:Wilder Gao
