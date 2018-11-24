@@ -1,4 +1,4 @@
-package communication;
+package count_utils;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
@@ -7,7 +7,7 @@ import java.util.concurrent.CountDownLatch;
  * @author WilderGao
  * time 2018-11-23 17:36
  * motto : everything is no in vain
- * description CountDownLatch 的应用，也就是所说的栅栏
+ * description 多线程计数工具CountDownLatch 的应用
  */
 public class CountDownLatchDemo {
     private static final int THREAD_COUNT_NUM = 7;

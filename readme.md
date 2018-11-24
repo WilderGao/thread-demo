@@ -24,4 +24,52 @@ Condition按字面意思理解就是条件，当然，我们也可以将其认�
 - ReentrantLock 调用lock方法时会进行同步，也就是说无论是读还是写，每一次只有一个线程可以获得锁
   
 - ReentrantReadWriteLock 分为读锁和写锁，多个线程可以同时获取读锁读取共享变量，而读与写、写与写则是互斥的，同一个时间内只能有一个线程可以获取到锁
- 
+
+### 线程池的创建
+通过Executors框架可以创建出多种不同类型的线程池，我们一起来看一下：
+```java
+public class ThreadPoolDemo{
+    public static void main(String[] args){
+        // 创建只有一条线成的线程池，我们可以看到关键字SingleThread
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+        //创建存在缓冲区的线程池，应用中可以存在的线程为无限多
+        ExecutorService cachedThreadExecutor = Executors.newCachedThreadPool();
+        //创建指定线程数量的线程池，参数代表线程的数量
+        ExecutorService fixThreadExecutor = Executors.newFixedThreadPool(5);
+        //创建一个定长线程池，支持定时及周期性任务执行
+        ScheduledExecutorService scheduleThreadExecutor = Executors.newScheduledThreadPool(3);
+        //延迟三秒执行
+        scheduleThreadExecutor.schedule(new ThreadForPools(1), 4, TimeUnit.SECONDS);
+    }
+}
+```
+通过Executors框架创建出的线程很方便，但是通过阿里巴巴编码规范来看，这样不好管理我们的线程池,所以我们可以自己创建线程池
+```java
+public class ThreadPoolDemo{
+    public static void main(String[] args){
+        ExecutorService threadPool = new ThreadPoolExecutor(
+                10, 15, 0L, TimeUnit.SECONDS,
+                new LinkedBlockingDeque<>(10),
+                (Executors).defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy()
+        );
+    }
+}
+```
+**对于线程池提交任务有两个方法: submit 和 execute， 任务有两种形式： Runnable 和 Callable**
+#### Runnable 和 Callable
+相同点
+- 两者都是接口
+- 两者都可用来编写多线程程序
+- 两者都需要调用Thread.start()启动线程
+
+不同点
+- 实现Callable接口的任务线程能返回执行结果；而实现Runnable接口的任务线程不能返回结果
+- Callable接口的call()方法允许抛出异常；而Runnable接口的run()方法的异常只能在内部消化，不能继续上抛
+
+#### submit 和 execute
+- 通过这两个方法可以向线程池提交任务
+- submit可以提交Runnable，也可以提交Callable；execute提交Runnable
+
+### ThreadLocal 如何做到每一个线程维护一个变量的副本
+在ThreadLocal类中有一个static声明的Map，用于存储每一个线程的变量副本，Map中元素的键为线程对象，而值对应线程的变量副本。
+详细代码可见 /src/thread_local
