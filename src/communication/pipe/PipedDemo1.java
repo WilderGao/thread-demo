@@ -1,4 +1,4 @@
-package communication;
+package communication.pipe;
 
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.io.PipedWriter;
  * Description：Piped类型的流，必须要先进行绑定，也就是调用connect()方法，
  * 如果没有将输入流和输出流绑定起来将会出现异常
  */
-public class PipedDemo {
+public class PipedDemo1 {
     public static void main(String[] args) throws IOException {
         PipedWriter out = new PipedWriter();
         PipedReader in = new PipedReader();
